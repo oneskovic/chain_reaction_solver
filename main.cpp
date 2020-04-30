@@ -1,12 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include "Header files/GameBoard.h"
+#include "Header files/Solver.h"
 #include <iostream>
+#include <thread>
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
-    GameBoard game_board = GameBoard(10, 10);
+    GameBoard game_board = GameBoard(5, 5);
 
     int player = 0;
+    Solver computer1 = Solver(&game_board, 0);
+    Solver computer2 = Solver(&game_board, 1);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -18,8 +23,51 @@ int main()
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    if (game_board.PlayAt(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), player))
+                    /*
+                    if (game_board.PlayAt(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), player) && !game_board.IsFinished())
                         player ^= 1;
+                    /*
+
+                    /*
+                    if (game_board.PlayAt(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), player) && !game_board.IsFinished())
+                    {
+                        window.clear(sf::Color::White);
+                        game_board.DisplayBoard(&window);
+                        window.display();
+                        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+                        auto computer_move = computer.NextMove();
+                        int x = computer_move.first;
+                        int y = computer_move.second;
+                        std::cout << "Computer plays at: " << x << " " << y << "\n";
+                        game_board.PlayAt(x, y, player ^ 1);
+                    }
+                    */
+
+                    
+                    if (!game_board.IsFinished())
+                    {
+                        auto computer1_move = computer1.NextMove();
+                        int x1 = computer1_move.first;
+                        int y1 = computer1_move.second;
+                        std::cout << "Computer1 plays at: " << x1 << " " << y1 << "\n";
+                        game_board.PlayAt(x1, y1, 0);
+                    }
+
+                    window.clear(sf::Color::White);
+                    game_board.DisplayBoard(&window);
+                    window.display();
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+                    if (!game_board.IsFinished())
+                    {
+                        auto computer2_move = computer2.NextMove();
+                        int x2 = computer2_move.first;
+                        int y2 = computer2_move.second;
+                        std::cout << "Computer2 plays at: " << x2 << " " << y2 << "\n";
+                        game_board.PlayAt(x2, y2, 1);
+                    }
+                    
                 }
             }
         }
