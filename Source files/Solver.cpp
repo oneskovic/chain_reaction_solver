@@ -66,6 +66,7 @@ std::pair<int, int> Solver::NextMove()
 	escape:
 		depth--;
 	}
+
 	return std::pair<int, int>(best_row, best_column);
 }
 

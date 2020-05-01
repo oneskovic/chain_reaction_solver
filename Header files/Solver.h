@@ -11,6 +11,7 @@ private:
 	int HeuristicScore();
 	int Minimax(int alpha = INT_MIN, int beta = INT_MAX, int player = 0, int depth = 5);
 
+
 	GameBoard* board;
 	int player;
 };
