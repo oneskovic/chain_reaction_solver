@@ -11,6 +11,8 @@ public:
 		int player; //Denotes the player who owns the pieces on the square
 		int count; //Number of pieces on the square
 		int max_count; //Maximum number of pieces allowed on the square
+		GameBoardSquare(const GameBoardSquare& square_to_copy);
+		GameBoardSquare();
 	};
 
 	GameBoard(int no_columns = 10, int no_rows = 10);
@@ -22,7 +24,10 @@ public:
 	std::pair<int, int> NumberOfPlayers();
 	std::vector<std::vector<GameBoardSquare>> GetSquares();
 	void ReplaceBoard(std::vector<std::vector<GameBoardSquare>>* board);
-	
+	GameBoard(const GameBoard& other_board);
+	int GetRowCount();
+	int GetColumnCount();
+
 private:
 	bool LoadTextures();
 

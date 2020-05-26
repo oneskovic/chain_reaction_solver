@@ -6,7 +6,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Chain Reaction solver");
     GameBoard game_board = GameBoard(5, 5);
 
     int player = 0;
@@ -42,9 +42,8 @@ int main()
                             window.clear(sf::Color::White);
                             game_board.DisplayBoard(&window);
                             window.display();
-                            std::this_thread::sleep_for(std::chrono::seconds(1));
 
-                            auto computer_move = computer2.NextMove();
+                            auto computer_move = computer2.NextMoveMCTS();
                             int x = computer_move.first;
                             int y = computer_move.second;
                             std::cout << "Computer plays at: " << x << " " << y << "\n";
@@ -56,26 +55,29 @@ int main()
                     {
                         if (!game_board.IsFinished())
                         {
-                            auto computer1_move = computer1.NextMove();
+                            auto computer1_move = computer1.NextMoveMCTS(30000);
                             int x1 = computer1_move.first;
                             int y1 = computer1_move.second;
-                            std::cout << "Computer1 plays at: " << x1 << " " << y1 << "\n";
+                            std::cout << "MCTS plays at: " << x1 << " " << y1 << "\n";
                             game_board.PlayAt(x1, y1, 0);
                         }
 
                         window.clear(sf::Color::White);
                         game_board.DisplayBoard(&window);
                         window.display();
-                        std::this_thread::sleep_for(std::chrono::seconds(1));
 
                         if (!game_board.IsFinished())
                         {
                             auto computer2_move = computer2.NextMove();
                             int x2 = computer2_move.first;
                             int y2 = computer2_move.second;
-                            std::cout << "Computer2 plays at: " << x2 << " " << y2 << "\n";
+                            std::cout << "Minimax plays at: " << x2 << " " << y2 << "\n";
                             game_board.PlayAt(x2, y2, 1);
                         }
+
+                        window.clear(sf::Color::White);
+                        game_board.DisplayBoard(&window);
+                        window.display();
                     }
                 }
             }
