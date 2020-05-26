@@ -115,11 +115,11 @@ bool GameBoard::LoadTextures()
 	{
 		sf::Texture texture;
 		
-		if (!texture.loadFromFile("D:/Programming/ChainReactionSolver/github/Resources/Red/PNG/Red" + std::to_string(i) + ".png"))
+		if (!texture.loadFromFile("/Resources/Red/PNG/Red" + std::to_string(i) + ".png"))
 			return false;
 		player0_textures[i] = texture;
 
-		if (!texture.loadFromFile("D:/Programming/ChainReactionSolver/github/Resources/Green/PNG/Green" + std::to_string(i) + ".png"))
+		if (!texture.loadFromFile("/Resources/Green/PNG/Green" + std::to_string(i) + ".png"))
 			return false;
 		player1_textures[i] = texture;
 	}
@@ -128,7 +128,7 @@ bool GameBoard::LoadTextures()
 
 bool GameBoard::CanPlayAt(int row, int column, int player)
 {
-	if (!IsValidSquare(row,column))
+	if (!IsValidSquare(row,column) || IsFinished())
 		return false;
 	return board[row][column].player == -1 || board[row][column].player == player;
 }
@@ -184,6 +184,17 @@ void GameBoard::ReplaceBoard(std::vector<std::vector<GameBoardSquare>>* board)
 	}
 }
 
+GameBoard::GameBoard(const GameBoard& board_to_copy)
+{
+	board = board_to_copy.board;
+	/*player0_textures = board_to_copy.player0_textures;
+	player1_textures = board_to_copy.player1_textures;
+	line_width = board_to_copy.line_width;
+	vertical_spacing = board_to_copy.vertical_spacing;
+	horizontal_spacing = board_to_copy.horizontal_spacing;*/
+
+}
+
 bool GameBoard::IsValidSquare(int row, int column)
 {
 	if (row < 0 || row >= board.size() || column < 0 || column >= board[0].size())
@@ -237,4 +248,28 @@ void GameBoard::Explode(int row, int column, int player)
 
 		ClearSquare(current_row, current_column);
 	}
+}
+
+int GameBoard::GetRowCount()
+{
+	return board.size();
+}
+
+int GameBoard::GetColumnCount()
+{
+	return board[0].size();
+}
+
+GameBoard::GameBoardSquare::GameBoardSquare(const GameBoardSquare& square_to_copy)
+{
+	player = square_to_copy.player;
+	count = square_to_copy.count;
+	max_count = square_to_copy.max_count;
+}
+
+GameBoard::GameBoardSquare::GameBoardSquare()
+{
+	player = -1;
+	count = -1;
+	max_count = -1;
 }
